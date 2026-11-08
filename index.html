@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>EAGLE 🦅 JavaScript intermediate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+Bhaijaan+2:wght@600;800&family=Cairo:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#E6F4FF;--card:#FFFFFF;--ink:#17324D;--mute:#5B7691;--sky:#4CB8FF;--deep:#1F86E6;--sun:#FFD35C;--pink:#FF8FB1;--mint:#4FD9AE;--line:#C9E4F8;--code:#102A43;--codeInk:#D7EEFF;--shadow:0 6px 0 #BFE0F7;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0F2236;--card:#16324B;--ink:#E8F4FF;--mute:#9DBAD3;--line:#25506F;--shadow:0 6px 0 #0B1A29;--code:#0A1A2B}}
+:root[data-theme="dark"]{--bg:#0F2236;--card:#16324B;--ink:#E8F4FF;--mute:#9DBAD3;--line:#25506F;--shadow:0 6px 0 #0B1A29;--code:#0A1A2B}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Cairo,system-ui,sans-serif;line-height:1.8;overflow-x:hidden}
+.hero{text-align:center;padding:28px 16px 12px}
+.logo{font-family:'Baloo Bhaijaan 2',Cairo;font-weight:800;font-size:clamp(2.2rem,8vw,3.6rem);letter-spacing:2px;color:var(--deep);margin:0;line-height:1.2}
+.logo span{display:inline-block;animation:fly 3s ease-in-out infinite}
+@keyframes fly{50%{transform:translateY(-8px) rotate(-6deg)}}
+.sub{font-family:'Baloo Bhaijaan 2',Cairo;font-size:clamp(1.1rem,4vw,1.6rem);margin:2px 0 10px;background:var(--sun);color:#17324D;display:inline-block;padding:2px 18px;border-radius:99px;box-shadow:0 4px 0 #E8B93A}
+.cheer{margin:12px auto 0;display:block;border:0;background:var(--card);color:var(--ink);font:600 1rem Cairo;padding:8px 20px;border-radius:99px;cursor:pointer;box-shadow:var(--shadow);max-width:92%}
+.prog{height:10px;max-width:520px;margin:14px auto 0;background:var(--line);border-radius:9px;overflow:hidden}
+.prog i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--sky),var(--mint));transition:width .5s}
+nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding:10px 8px;display:flex;gap:8px;overflow-x:auto;scrollbar-width:thin}
+nav button{flex:0 0 auto;border:2px solid var(--line);background:var(--card);color:var(--ink);font:700 .95rem Cairo;padding:6px 14px;border-radius:99px;cursor:pointer;white-space:nowrap;transition:.2s}
+nav button.on{background:var(--deep);border-color:var(--deep);color:#fff;transform:translateY(-2px)}
+nav button.seen::after{content:" ✓";color:var(--mint)}
+main{max-width:1150px;margin:0 auto;padding:8px 14px 40px}
+.tag{font-family:'Baloo Bhaijaan 2',Cairo;font-size:1.25rem;color:var(--deep);margin:8px 0 14px}
+.grid{column-width:340px;column-gap:16px}
+.card{background:var(--card);border:2px solid var(--line);border-radius:20px;padding:16px;box-shadow:var(--shadow);min-width:0;animation:pop .35s both;break-inside:avoid;display:block;width:100%;margin:0 0 16px}
+@keyframes pop{from{opacity:0;transform:translateY(10px)}}
+.card h3{margin:0 0 6px;font-family:'Baloo Bhaijaan 2',Cairo;font-size:1.2rem;color:var(--deep)}
+.card p{margin:6px 0}
+
+pre{direction:ltr;text-align:left;background:var(--code);color:var(--codeInk);padding:12px;border-radius:12px;white-space:pre-wrap;overflow-wrap:anywhere;font:400 .85rem/1.6 'JetBrains Mono',monospace;margin:8px 0}
+code{font-family:'JetBrains Mono',monospace}
+p code{background:#4CB8FF26;padding:0 6px;border-radius:6px;direction:ltr;unicode-bidi:isolate}
+.demo{margin-top:10px;padding:12px;border:2px dashed var(--sky);border-radius:14px;background:#4CB8FF12}
+.demo::before{content:"🎮 جرّب بنفسك";display:block;font-weight:700;font-size:.85rem;color:var(--mute);margin-bottom:6px}
+.b,.b2{border:0;font:700 .95rem Cairo;padding:6px 14px;border-radius:12px;cursor:pointer;margin:3px;background:var(--deep);color:#fff;box-shadow:0 3px 0 #1766B3}
+.b2{background:var(--sun);color:#17324D;box-shadow:0 3px 0 #E8B93A}
+.b:active,.b2:active{transform:translateY(2px);box-shadow:none}
+.out{direction:ltr;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:8px 10px;margin:8px 0 0;font:400 .85rem/1.6 'JetBrains Mono',monospace;white-space:pre-wrap;word-break:break-word;min-height:1.6em}
+input,select{font:600 .95rem Cairo;padding:5px 10px;border-radius:10px;border:2px solid var(--line);background:var(--card);color:var(--ink);max-width:100%}
+input[type=range]{padding:0;width:100%}
+label{margin-inline-end:10px;display:inline-block}
+.chip{display:inline-block;border:2px solid var(--line);background:var(--card);color:var(--ink);padding:2px 12px;margin:3px;border-radius:99px;cursor:pointer;font:600 .85rem 'JetBrains Mono',monospace;direction:ltr}
+.chip.on{background:var(--sky);border-color:var(--sky);color:#fff}
+.box{border:2px solid var(--deep);border-radius:14px;padding:10px;text-align:center;direction:ltr}
+.box .box{border-color:var(--pink)}.box .box .box{border-color:var(--mint)}
+table.t{border-collapse:collapse;direction:ltr;margin:6px 0}
+table.t td{border:2px solid var(--line);padding:4px 16px;cursor:pointer}
+.good{color:#139A6B;font-weight:700}.bad{color:#E0457B;font-weight:700}
+.tip{background:#FFD35C55;border-radius:12px;padding:8px 12px;margin:8px 0;font-size:.95rem}
+.vs{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:520px){.vs{grid-template-columns:1fr}.card{padding:12px}nav button{font-size:.85rem}}
+footer{text-align:center;color:var(--mute);padding:18px 10px 30px;font-weight:600}
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1 class="logo">EAGLE <span>🦅</span></h1>
+  <div class="sub">JavaScript intermediate</div>
+  <button class="cheer" id="cheer" type="button">✨ اضغط هنا لجرعة حماس</button>
+  <div class="prog" aria-label="التقدم"><i id="bar"></i></div>
+</header>
+<nav id="nav" aria-label="الأقسام"></nav>
+<main id="main"></main>
+<footer>EAGLE 🦅 — حلّق عالياً في الجافا سكريبت</footer>
+<script>
+const $=(s,r=document)=>r.querySelector(s),$$=(s,r=document)=>[...r.querySelectorAll(s)];
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const fmt=v=>typeof v==='string'?v:(v===undefined||typeof v==='number'||typeof v==='function'||typeof v==='boolean'||v===null)?String(v):JSON.stringify(v);
+const run=(label,fn)=>d=>{d.innerHTML=`<button class="b" type="button">▶ ${label}</button><pre class="out"></pre>`;$('button',d).onclick=()=>{let r;try{r=fn()}catch(e){r='Error: '+e.message}$('.out',d).textContent=fmt(r)}};
+const log=[];
+
+/* ===== Demos ===== */
+const evBasic=d=>{d.innerHTML=`<button class="b" id="eb" type="button">🔔 اضغط عليّ</button><button class="b2" data-a="1" type="button">addEventListener</button><button class="b2" data-a="0" type="button">removeEventListener</button><p class="out">عدد الضغطات: <b>0</b> | المراقب: <b>غير مفعّل ❌</b></p>`;
+let n=0,on=false;const t=$('#eb',d),o=$('.out',d),up=()=>o.innerHTML=`عدد الضغطات: <b>${n}</b> | المراقب: <b>${on?'مفعّل ✅':'غير مفعّل ❌'}</b>`;
+const fn=()=>{n++;up()};
+$$('[data-a]',d).forEach(b=>b.onclick=()=>{if(b.dataset.a==='1'){t.addEventListener('click',fn);on=true}else{t.removeEventListener('click',fn);on=false}up()})};
+
+const tgt=d=>{d.innerHTML=`<table class="t">${['Name','Age','Class'].map(x=>`<tr><td>${x}</td></tr>`).join('')}</table><pre class="out">اضغط على خلية…</pre>`;
+$$('tr',d).forEach(r=>r.addEventListener('click',e=>{$('.out',d).textContent='event.target → <'+e.target.tagName.toLowerCase()+'>\nevent.currentTarget → <'+e.currentTarget.tagName.toLowerCase()+'>'}))};
+
+const bub=d=>{d.innerHTML=`<label><input type="checkbox" id="cp"> capture: true (على Window)</label><label><input type="checkbox" id="sp"> stopPropagation (على الزر)</label><div class="box" id="bw">Window<div class="box" id="bd">div<div style="margin-top:6px"><button class="b" id="bb" type="button">Button 👆</button></div></div></div><pre class="out">اضغط على الزر…</pre>`;
+let seq=[];const L=n=>()=>seq.push(n);const W=L('Window'),D=L('div');
+const B=e=>{seq.push('Button');if($('#sp',d).checked)e.stopPropagation()};
+const bw=$('#bw',d),bd=$('#bd',d),bb=$('#bb',d);let cap=false;
+const attach=()=>{bw.removeEventListener('click',W,true);bw.removeEventListener('click',W,false);bw.addEventListener('click',W,cap)};
+attach();bd.addEventListener('click',D);bb.addEventListener('click',B);
+$('#cp',d).onchange=e=>{cap=e.target.checked;attach()};
+bb.addEventListener('click',()=>{setTimeout(()=>{$('.out',d).textContent='الترتيب: '+seq.join(' → ');seq=[]},0)})};
+
+const pd=d=>{d.innerHTML=`<label><input type="checkbox" id="pc"> preventDefault()</label><br><a href="https://example.com" target="_blank" rel="noopener" id="pl">🔗 رابط تجريبي</a><pre class="out">—</pre>`;
+$('#pl',d).addEventListener('click',e=>{const m=$('#pc',d).checked;if(m)e.preventDefault();$('.out',d).textContent=m?'تم منع السلوك الافتراضي 🚫 (لم ينتقل الرابط)':'السلوك الافتراضي يعمل ✅ (سيفتح الرابط)'})};
+
+const keys=d=>{d.innerHTML=`<input id="ki" placeholder="اكتب هنا…"><pre class="out">—</pre>`;const o=$('.out',d);let a=[];const add=(t,x='')=>{a.unshift(t+x);a=a.slice(0,6);o.textContent=a.join('\n')};
+const i=$('#ki',d);i.addEventListener('focus',()=>add('focus'));i.addEventListener('blur',()=>add('blur'));i.addEventListener('keydown',e=>add('keydown → ',e.key));i.addEventListener('keyup',e=>add('keyup → ',e.key))};
+
+const ord=d=>{d.innerHTML=`<input id="oi" value="10 + 5 * 2" dir="ltr" style="width:100%"><div>${['10 + 5 * 2','(10 + 5) * 2','10 / 2 + 5','10 - 2 * 3','2 ** 3 * 2'].map(x=>`<span class="chip" dir="ltr">${x}</span>`).join('')}</div><pre class="out"></pre>`;
+const i=$('#oi',d),o=$('.out',d),go=()=>{const v=i.value;o.textContent=/^[\d+\-*/().\s]+$/.test(v)?v+' = '+Function('"use strict";return ('+v+')')():'أرقام وعمليات فقط 🙂'};
+i.oninput=go;$$('.chip',d).forEach(c=>c.onclick=()=>{i.value=c.textContent;go()});go()};
+
+const grade=d=>{d.innerHTML=`<input type="number" id="gi" value="85" min="0" max="100"><pre class="out"></pre>`;const g=$('#gi',d),o=$('.out',d),go=()=>{const x=+g.value;o.textContent=x>=90?'ممتاز':x>=80?'جيد جدًا':x>=70?'جيد':x>=60?'مقبول':'راسب'};g.oninput=go;go()};
+
+const eq=d=>{const P=[[1,'"1"',1,"1"],[0,'false',0,false],['null','undefined',null,undefined],['""','0','',0],['NaN','NaN',NaN,NaN]];
+d.innerHTML=`<div>${P.map((p,i)=>`<span class="chip" data-i="${i}">${p[0]} , ${p[1]}</span>`).join('')}</div><pre class="out">اختر مقارنة…</pre>`;
+$$('.chip',d).forEach(c=>c.onclick=()=>{$$('.chip',d).forEach(x=>x.classList.remove('on'));c.classList.add('on');const p=P[c.dataset.i];$('.out',d).textContent=`${p[0]} == ${p[1]}   // ${p[2]==p[3]}\n${p[0]} === ${p[1]}  // ${p[2]===p[3]}`})};
+
+const tf=d=>{const V=[['0',0],['"0"',"0"],['""',""],['[]',[]],['{}',{}],['null',null],['undefined',undefined],['NaN',NaN],['-1',-1],['"false"',"false"]];
+d.innerHTML=`<div>${V.map((v,i)=>`<span class="chip" data-i="${i}">${v[0]}</span>`).join('')}</div><pre class="out">اضغط على قيمة…</pre>`;
+$$('.chip',d).forEach(c=>c.onclick=()=>{$$('.chip',d).forEach(x=>x.classList.remove('on'));c.classList.add('on');const v=V[c.dataset.i];$('.out',d).innerHTML=`Boolean(${v[0]}) → <span class="${Boolean(v[1])?'good':'bad'}">${Boolean(v[1])?'Truthy ✅':'Falsy ❌'}</span>`})};
+
+const coer=d=>{d.innerHTML=`<input id="cn" type="number" value="5" style="width:80px"> + <input id="cs" value="10" style="width:80px"><pre class="out"></pre>`;
+const n=$('#cn',d),s=$('#cs',d),o=$('.out',d),go=()=>{const a=+n.value,b=s.value;o.textContent=`ضمني:  ${a} + "${b}" = "${a+b}"  (${typeof(a+b)})\nصريح:  ${a} + Number("${b}") = ${a+Number(b)}  (${typeof(a+Number(b))})`};n.oninput=s.oninput=go;go()};
+
+const tern=d=>{d.innerHTML=`<label>العمر: <b id="av">20</b></label><input type="range" id="ag" min="5" max="40" value="20"><pre class="out"></pre>`;
+const g=$('#ag',d),go=()=>{const a=+g.value;$('#av',d).textContent=a;$('.out',d).textContent=`age >= 18 ? "بالغ" : "قاصر"  →  ${a>=18?'بالغ':'قاصر'}\nage >= 18 && "بالغ"  →  ${a>=18&&'بالغ'}`};g.oninput=go;go()};
+
+const sw=d=>{const N=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+d.innerHTML=`<select id="sd">${N.map((n,i)=>`<option value="${i}">${i} — ${n}</option>`).join('')}<option value="9">9 — (غير صحيح)</option></select> <label><input type="checkbox" id="sb" checked> break</label><pre class="out"></pre>`;
+const go=()=>{const v=+$('#sd',d).value,br=$('#sb',d).checked,r=[];let hit=false;for(let i=0;i<7;i++){if(i===v||hit){r.push('It is '+N[i]);hit=true;if(br)break}}if(!hit)r.push('Incorrect Day');$('.out',d).textContent=r.join('\n')};
+$('#sd',d).onchange=$('#sb',d).onchange=go;go()};
+
+const tmr=d=>{d.innerHTML=`<label>التأخير: <b id="tv">2</b> ث</label><input type="range" id="td" min="1" max="5" value="2"><button class="b" id="t1" type="button">setTimeout</button><button class="b2" id="t2" type="button">setInterval ▶</button><button class="b2" id="t3" type="button">clearInterval ⏹</button><pre class="out">—</pre>`;
+const o=$('.out',d);let iv=null,c=0;$('#td',d).oninput=e=>$('#tv',d).textContent=e.target.value;
+$('#t1',d).onclick=()=>{const s=$('#td',d).value;o.textContent='⏳ انتظر '+s+' ثانية…';setTimeout(()=>o.textContent='Hello World 👋',s*1000)};
+$('#t2',d).onclick=()=>{if(iv)return;c=0;iv=setInterval(()=>{c++;o.textContent='counter = '+c},1000);o.textContent='بدأ العدّاد…'};
+$('#t3',d).onclick=()=>{clearInterval(iv);iv=null;o.textContent+='\nThe End ✋'}};
+
+const objD=d=>{d.innerHTML=`<input id="ok" placeholder="key" style="width:90px"> <input id="ov" placeholder="value" style="width:90px"> <button class="b" id="o1" type="button">إضافة/تعديل</button><button class="b2" id="o2" type="button">delete</button><label><input type="checkbox" id="of"> Object.freeze</label><pre class="out"></pre>`;
+const ob={name:'Ali',age:23},o=$('.out',d),sh=m=>o.textContent=JSON.stringify(ob)+(m?'\n'+m:'');sh();
+$('#of',d).onchange=e=>{if(e.target.checked){Object.freeze(ob);sh('❄️ تم التجميد')}};
+const go=f=>{const k=$('#ok',d).value.trim();if(!k)return;const before=JSON.stringify(ob);f(k);sh(before===JSON.stringify(ob)&&Object.isFrozen(ob)?'❄️ مجمّد — لم يتغير شيء':'')};
+$('#o1',d).onclick=()=>go(k=>{ob[k]=$('#ov',d).value});$('#o2',d).onclick=()=>go(k=>{delete ob[k]})};
+
+const cp=d=>{d.innerHTML=`<select id="cm"><option value="0">obj2 = obj1  (مرجع)</option><option value="1">{ ...obj1 }  (نسخ سطحي)</option><option value="2">{ ...obj1, address:{ ...obj1.address } }</option></select><button class="b" id="cg" type="button">غيّر في النسخة ✏️</button><pre class="out"></pre>`;
+const go=()=>{const m=$('#cm',d).value,o1={name:'Ali',address:{city:'Cairo'}};const o2=m==='0'?o1:m==='1'?{...o1}:{...o1,address:{...o1.address}};o2.name='Ahmed';o2.address.city='Giza';$('.out',d).textContent='obj1 → '+JSON.stringify(o1)+'\nobj2 → '+JSON.stringify(o2)};
+$('#cg',d).onclick=go;$('#cm',d).onchange=()=>$('.out',d).textContent='اضغط "غيّر في النسخة"'};
+
+const mapD=d=>{d.innerHTML=`<input id="mk" placeholder="key" style="width:90px"> <input id="mv" placeholder="value" style="width:90px"> <button class="b" id="m1" type="button">set</button><button class="b2" id="m2" type="button">delete</button><button class="b2" id="m3" type="button">get</button><pre class="out"></pre>`;
+const m=new Map([['key1','value1']]),o=$('.out',d),sh=x=>o.textContent=[...m].map(([k,v])=>k+' => '+v).join('\n')+(x?'\n'+x:'');sh();
+$('#m1',d).onclick=()=>{const k=$('#mk',d).value;if(k){m.set(k,$('#mv',d).value);sh()}};$('#m2',d).onclick=()=>{m.delete($('#mk',d).value);sh()};$('#m3',d).onclick=()=>sh('get → '+m.get($('#mk',d).value))};
+
+const arrD=d=>{const M={'push(4,5)':a=>a.push(4,5),'unshift(0)':a=>a.unshift(0),'pop()':a=>a.pop(),'shift()':a=>a.shift(),'reverse()':a=>a.reverse(),'splice(1,2)':a=>a.splice(1,2),'sort()':a=>a.sort(),'slice(1,4)':a=>a.slice(1,4)};
+const mut=['push(4,5)','unshift(0)','pop()','shift()','reverse()','splice(1,2)','sort()'];
+d.innerHTML=`<div>${Object.keys(M).map(k=>`<button class="${mut.includes(k)?'b':'b2'}" data-k="${k}" type="button">${k}</button>`).join('')}<button class="b2" id="ar" type="button">↺</button></div><small>🟦 Mutable (يغيّر الأصل) — 🟨 Immutable (نسخة جديدة)</small><pre class="out"></pre>`;
+let a=[1,2,3,4,5];const o=$('.out',d),sh=x=>o.textContent='array = '+JSON.stringify(a)+(x?'\n'+x:'');sh();
+$$('[data-k]',d).forEach(b=>b.onclick=()=>{const r=M[b.dataset.k](a);sh('أُعيد: '+fmt(r))});$('#ar',d).onclick=()=>{a=[1,2,3,4,5];sh()}};
+
+const cbD=d=>{const A=[1,2,3,4,5],M={'find(n => n > 3)':()=>A.find(n=>n>3),'findIndex(n => n === 3)':()=>A.findIndex(n=>n===3),'filter(n => n % 2 === 0)':()=>A.filter(n=>n%2===0),'some(n => n % 2 === 0)':()=>A.some(n=>n%2===0),'every(n => n % 2 === 0)':()=>A.every(n=>n%2===0),'map(n => n * 2)':()=>A.map(n=>n*2),'reduce((acc, n) => acc + n, 0)':()=>A.reduce((c,n)=>c+n,0),'forEach(n => ...)':()=>{const r=[];A.forEach(n=>r.push('Number: '+n));return r.join(' | ')+'\n(returns undefined)'}};
+d.innerHTML=`<code dir="ltr">[1, 2, 3, 4, 5].</code><select dir="ltr" id="cs">${Object.keys(M).map(k=>`<option>${k}</option>`).join('')}</select><button class="b" id="cr" type="button">▶</button><pre class="out"></pre>`;
+$('#cr',d).onclick=()=>$('.out',d).textContent=fmt(M[$('#cs',d).value]())};
+
+const sj=d=>{d.innerHTML=`<input id="jt" value="I love Almdrasa" dir="ltr"> <input id="jd" value="-" dir="ltr" style="width:50px"><button class="b" id="j1" type="button">split(' ') → join(sep)</button><pre class="out"></pre>`;
+$('#j1',d).onclick=()=>{const w=$('#jt',d).value.split(' ');$('.out',d).textContent='split → '+JSON.stringify(w)+'\njoin  → "'+w.join($('#jd',d).value)+'"'}};
+
+const loops=d=>{d.innerHTML=`<select id="lt"><option value="forin">for...in</option><option value="forof">for...of</option><option value="while">while (count &lt; 5)</option><option value="dw">do...while (count &lt; 5)</option></select> <label>تبدأ من: <input id="ls" type="number" value="0" style="width:70px"></label><button class="b" id="lr" type="button">▶</button><pre class="out"></pre>`;
+$('#lr',d).onclick=()=>{const t=$('#lt',d).value,s=+$('#ls',d).value,r=[];let c=s;
+if(t==='forin'){const p={name:'John',age:30,gender:'male'};for(let k in p)r.push(k+': '+p[k])}
+else if(t==='forof'){for(let n of [1,2,3,4,5])r.push(n)}
+else if(t==='while'){while(c<5){r.push(c);c++}}
+else{do{r.push(c);c++}while(c<5)}
+$('.out',d).textContent=r.length?r.join('\n'):'(لم يُنفَّذ أي تكرار)'}};
+
+/* ===== Content (same order as the notes) ===== */
+const S=[
+{n:'Event Listener',i:'🎧',tag:'متركز يا عم، دي أهم حاجة في التفاعل! 🎯',c:[
+['ما هو Event Listener؟','تنفيذ شيء معين عند حدوث حدث معين؛ مثل الضغط على كلمة أو زر فتُنفَّذ دالة. هو مراقب يراقب حدثًا تحدده أنت، وعند حدوثه يعمل المطلوب. الأحداث تربط الدوال (Functions) بعناصر HTML وقد تكون نتيجة إجراء المستخدم كالنقر أو تحريك الماوس.','',evBasic],
+['addEventListener','تربط دالة بحدث معين في عنصر HTML، فعند حدوث الحدث مثل click تُنفَّذ الدالة.',`const button = document.getElementById("myButton");
+function myFunction() {
+  alert("Hello World");
+}
+button.addEventListener("click", myFunction);`],
+['removeEventListener','تزيل دالة مرتبطة بحدث. <b>مهم:</b> يجب تمرير نفس الحدث ونفس الدالة المستخدمين في addEventListener.',`button.addEventListener("click", myFunction);
+button.removeEventListener("click", myFunction);`],
+['target vs. currentTarget','<code>target</code>: العنصر الفعلي الذي تم النقر عليه. <code>currentTarget</code>: العنصر الذي رُبط به الحدث بغض النظر عن العنصر المنقور. عند النقر على خلية &lt;td&gt; يكون target هو td، وcurrentTarget هو &lt;tr&gt;.',`const rows = document.querySelectorAll('#myTable tr');
+rows.forEach(row => {
+  row.addEventListener('click', event => {
+    console.log(event.target);        // العنصر الفعلي
+    console.log(event.currentTarget); // العنصر المربوط به الحدث
+  });
+});`,tgt],
+['bubbling vs. capture','نمطان لتنفيذ الأحداث يتحكمان في ترتيب التنفيذ عند تداخل العناصر. <b>Bubbling</b> (الافتراضي): ينفَّذ الحدث في العنصر الفرعي أولًا ثم يصعد للأب والجد. <b>Capture</b>: عكسه تمامًا، من الأعلى إلى العنصر الفرعي. <b>stopPropagation</b> توقف انتشار الحدث بعد تنفيذه في العنصر الحالي. و<b>capture: true</b> تجعل الحدث يُنفَّذ بنمط capture، فيعمل حدث Window قبل h2 مثلًا.',`button.addEventListener("click", (e) => h2Function(e, "You Clicked Button"));
+window.addEventListener("click", (e) => windowFunction(e, "You Clicked Window"));
+// capture: true
+window.addEventListener("click", fn, { capture: true });
+// stopPropagation
+event.stopPropagation();`,bub],
+['preventDefault()','تمنع السلوك الافتراضي للحدث. مثلًا عند النقر على رابط لن يتم توجيهك إليه.',`const link = document.querySelector('a');
+link.addEventListener('click', function(event) {
+  event.preventDefault();
+});`,pd],
+['focus / blur / keydown / keyup','أحداث تتعلق بعناصر الإدخال (Input). <b>keyup</b>: عند رفع المفتاح بعد الضغط. <b>keydown</b>: عند الضغط على مفتاح، وتُستخدم للتعامل الفوري مع الإدخال. <b>focus</b>: عند تحديد حقل الإدخال. <b>blur</b>: عند الضغط بعيدًا عن الحقل.','input.addEventListener("keydown", (e) => console.log(e.key));',keys]]},
+
+{n:'Accessibility',i:'♿',tag:'استعن بالله ولا تعجز 🤲',c:[
+['ما هو Accessibility؟','قدرة المواقع والتطبيقات على أن تكون قابلة للاستخدام ومفهومة ومتاحة لجميع الأشخاص بغض النظر عن قدراتهم البدنية أو الحسية أو العقلية أو التقنية؛ أي أن المحتوى والتصميم والوظائف متاحة لكل المستخدمين بما فيهم ذوو الإعاقات.'],
+['حسّن موقعك','توجد خطوات كثيرة لتحسين Accessibility في موقعك، وستجدها في المصادر الخاصة بهذا القسم في الدورة للتعرف على كل ما يساعدك في ذلك. 🌍']]},
+
+{n:'ترتيب العمليات',i:'🧮',tag:'شد حيلك يا بطل، الحساب له ترتيب! 💪',c:[
+['Order of operations','الترتيب في الملف: 1) ما بين الأقواس () أولًا 2) الأس (**) 3) القسمة (/) 4) الضرب (*) 5) الجمع (+) 6) الطرح (-).<div class="tip">💡 للتنبيه: في جافا سكريبت فعليًا القسمة والضرب في نفس المستوى ويُنفَّذان من اليسار لليمين، والجمع والطرح كذلك.</div>',`let result  = 10 + 5 * 2;   // 20
+let result2 = (10 + 5) * 2; // 30
+let result3 = 10 / 2 + 5;   // 10
+let result4 = 10 - 2 * 3;   // 4`,ord]]},
+
+{n:'الشروط',i:'🚦',tag:'متركز يا عم، كل شرط بباب ومفتاح 🔑',c:[
+['if','تتحقق من شرط، وإذا كان true يُنفَّذ الكود بداخلها. تخيل الأقواس {} بابًا، والمفتاح هو الشرط.',`if (condition) {
+  // الكود إذا تحقق الشرط
+}
+let x = true;
+if (x === true) {
+  console.log("x is true");
+}`],
+['else / else if','<code>else</code> تُنفَّذ إذا كان شرط if غير صحيح. <code>else if</code> تفحص شروطًا إضافية بالترتيب، وإذا لم يتحقق أي شرط ندخل على else.',`let grade = parseInt(prompt("أدخل الدرجة: "));
+if (grade >= 90) { console.log("ممتاز"); }
+else if (grade >= 80) { console.log("جيد جدًا"); }
+else if (grade >= 70) { console.log("جيد"); }
+else if (grade >= 60) { console.log("مقبول"); }
+else { console.log("راسب"); }`,grade],
+['AND و OR','<code>&&</code> يتطلب تحقق الشرطين، و<code>||</code> يكفي تحقق أحدهما أو كليهما.',`let x = 5, y = 10;
+if (x > 0 && y > 0) { console.log("x and y are positive"); }
+if (x > 0 || y > 0) { console.log("x or y (or both) are positive"); }`],
+['== مقابل ===','<code>==</code> يقارن القيمة فقط ويتجاهل اختلاف النوع، أما <code>===</code> فيقارن القيمة والنوع معًا.',`console.log(1 == 1);    // true
+console.log(1 == "1");  // true
+console.log(1 === 1);   // true
+console.log(1 === "1"); // false`,eq],
+['Truthy and Falsy','<b>Truthy:</b> كل الأعداد عدا الصفر، أي String غير فارغ حتى "0"، المصفوفة [] وإن كانت فارغة، والكائن {} وإن كان فارغًا.<br><b>Falsy:</b> الصفر 0، String فارغ، undefined، null، NaN، والمصفوفة الفارغة عند فحص length، والكائن الفارغ عند فحص Object.keys({}).length.',`let value = 0; // غيّر القيمة هنا
+if (value) { console.log("The value is Truthy"); }
+else { console.log("The value is Falsy"); }
+Boolean(value);`,tf],
+['Coercion','تحويل قيمة من نوع بيانات لآخر حسب السياق. <b>الضمني (Implicit)</b>: تلقائيًا من جافا سكريبت. <b>الصريح (Explicit)</b>: يقوم به كاتب الكود بدوال مثل Boolean() وString() وNumber().',`let num = 5; let str = "10";
+console.log(num + str);       // "510"  (ضمني)
+let n = Number("5");          // 5      (صريح)
+console.log(typeof n);        // "number"`,coer],
+['Ternary','طريقة مختصرة لكتابة if بكود أقل: <code>condition ? value1 : value2</code>. وإذا كانت if بدون else فلها طريقتان: ternary مع undefined، أو <code>&&</code>.',`condition ? value1 : value2;
+// if بدون else
+condition ? value1 : undefined;
+condition && value1;`,tern],
+['Switch Case','تتخذ قرارات مختلفة حسب قيمة محددة، وتشبه if. الخطوات: تبدأ بكلمة switch، وتمرر قيمة بين الأقواس لتُقارن بالـ case، ثم أقواس {}، وكل case يبدأ بكلمة case وقيمة المقارنة وينتهي بـ <b>break</b> لإيقاف تنفيذ باقي الحالات دون داعٍ. جرّب إلغاء break لترى ماذا يحدث!',`const today = new Date().getDay();
+switch (today) {
+  case 0: console.log("It is Sunday"); break;
+  case 1: console.log("It is Monday"); break;
+  // ... 2 → 5
+  case 6: console.log("It is Saturday"); break;
+  default: console.log("Incorrect Day");
+}`,sw]]},
+
+{n:'المؤقتات',i:'⏱️',tag:'شد حيلك يا بطل، الوقت في صفك! ⏳',c:[
+['setTimeout','تؤجل تنفيذ دالة بعد فترة بالميلي ثانية. معاملاها: Callback function، ومدة الانتظار (delay).',`function fnTimer() {
+  console.log("Hello World");
+}
+setTimeout(fnTimer, 3000); // بعد 3 ثوانٍ`],
+['setInterval + clearInterval','تنفذ دالة بانتظام بفاصل زمني ثابت ولا تتوقف من نفسها، لذلك نستخدم clearInterval لإيقافها.',`function count() {
+  let counter = 0;
+  const intervalId = setInterval(() => {
+    console.log(counter);
+    counter++;
+  }, 1000);
+  setTimeout(() => {
+    clearInterval(intervalId);
+    console.log("The End");
+  }, 5000);
+}
+count();`,tmr]]},
+
+{n:'Objects',i:'📦',tag:'استعن بالله ولا تعجز 🤲',c:[
+['الكائن (Object)','نوع بيانات أساسي يخزن البيانات كخصائص (Keys) وقيم (Values). يمكن وضع متغيرات مكان القيم. للإضافة أو التعديل: Dot Notation أو Bracket Notation.',`let myObject = {
+  key1: value1,
+  key2: value2
+};
+myObject.key = value;       // Dot Notation
+myObject['key'] = value;    // Bracket Notation
+myObject.key = newValue;    // تعديل`,objD],
+['Object.freeze و delete','<code>Object.freeze()</code> تجمّد الكائن فلا يمكن تعديل خصائصه أو إضافة أو حذف خصائص. و<code>delete</code> تحذف خاصية. (جرّب تفعيل freeze في اللعبة أعلاه!)',`let myObject = { key: 'value' };
+Object.freeze(myObject);
+myObject.key = 'new value'; // لن يتغير شيء
+delete myObject.key;        // حذف خاصية`],
+['Pass by value','عند نسخ متغير لآخر تُنسخ القيمة فقط، وكل متغير يشير إلى خانة مختلفة في الذاكرة (RAM). وعند تمرير متغير لدالة فتغييره داخلها لا يؤثر على الأصل.',`function increment(num) {
+  num++;
+  return num; // 6
+}
+let number = 5;
+increment(number);
+console.log(number);`,run('شغّل المثال',()=>{function inc(n){n++;return n}let number=5;const inside=inc(number);return 'داخل الدالة: '+inside+'\nخارجها: '+number})],
+['Pass by reference','عند نسخ كائن بـ <code>=</code> يشير الاثنان لنفس الخانة في الذاكرة، فتغيير أحدهما يغير الآخر. كائنان متطابقان في المحتوى لكنهما في مكانين مختلفين تعطي المقارنة بينهما <code>false</code>.',`let person1 = { name: "Ali", age: "23" };
+let person2 = { name: "Ali", age: "23" };
+console.log(person1 === person2); // false
+person1 = person2;
+console.log(person1 === person2); // true
+person1.name = "Ahmed";
+console.log(person2); // { name: 'Ahmed', age: '23' }`,run('شغّل المثال',()=>{let a={name:'Ali'},b={name:'Ali'};const r1=a===b;a=b;const r2=a===b;a.name='Ahmed';return 'قبل الربط: '+r1+'\nبعد الربط: '+r2+'\nperson2 = '+JSON.stringify(b)})],
+['نسخ الكائن بدون مرجع','باستخدام <b>spread operator</b> تنسخ خصائص الكائن في كائن جديد. وللكائن الداخلي طبّق spread عليه أيضًا. وهناك <b>Object.assign(target, source)</b>.',`let obj2 = { ...obj1, address: { ...obj1.address } };
+let obj3 = Object.assign({}, obj1);`,cp],
+['دوال Object','<code>Object.keys()</code> المفاتيح، <code>Object.values()</code> القيم، <code>Object.entries()</code> المفاتيح والقيم. ويمكن إنشاء كائن بـ <code>{}</code> أو <code>new Object()</code>.',`const o = { name: 'Ali', age: 23 };
+Object.keys(o);    // ['name','age']
+Object.values(o);  // ['Ali',23]
+Object.entries(o); // [['name','Ali'],['age',23]]`,run('شغّل الدوال',()=>{const o={name:'Ali',age:23};return 'keys: '+JSON.stringify(Object.keys(o))+'\nvalues: '+JSON.stringify(Object.values(o))+'\nentries: '+JSON.stringify(Object.entries(o))})],
+['Map','تشبه الكائن في تخزين Keys و Values، لكنها تهتم بالترتيب وتطبع البيانات بترتيب إدخالها، أما الكائن فلا يهتم بالترتيب. أنشئها بـ <code>new Map()</code>، وأضف بـ set، واقرأ بـ get، واحذف بـ delete. وللمرور: forEach أو for...of.',`const myMap = new Map();
+myMap.set("key1", "value1");
+myMap.get("key1");     // "value1"
+myMap.delete("key1");
+myMap.forEach((value, key) => { /* ... */ });
+for (const [key, value] of myMap) { /* ... */ }`,mapD]]},
+
+{n:'Array',i:'🧺',tag:'متركز يا عم، المصفوفات عالم كبير! 🌍',c:[
+['الأساسيات','هيكل بيانات يخزن مجموعة قيم في متغير واحد بأقواس مربعة []. يبدأ الـ index من الصفر.',`let myArray = [10, 20, 30];
+console.log(myArray[0]); // 10
+myArray[1] = 50;
+console.log(myArray);    // [10, 50, 30]`],
+['typeof و length','<code>typeof</code> تعيد "object" للمصفوفة، فلا تعتمد عليها، واستخدم <code>Array.isArray()</code>. و<code>length</code> عدد العناصر.',`console.log(typeof myArray);         // "object"
+console.log(Array.isArray(myArray)); // true
+console.log(myArray.length);         // 3`,run('جرّب',()=>{const a=[10,20,30];return 'typeof → '+typeof a+'\nArray.isArray → '+Array.isArray(a)+'\nlength → '+a.length})],
+['Mutable و Immutable','<b>Mutable</b> تغيّر المصفوفة الأصلية، و<b>Immutable</b> لا تغيّرها بل تنشئ نسخة جديدة. جرّب كل دالة وراقب الفرق (reverse, push, unshift, splice, pop, shift = Mutable. slice = Immutable).',`let array = [1, 2, 3, 4, 5];
+array.reverse();      // Mutable
+array.slice(1, 4);    // Immutable → [2,3,4]
+array.push(4, 5);     // Mutable (النهاية)
+array.unshift(4, 5);  // Mutable (البداية)
+array.splice(1, 2);   // Mutable (حذف)
+array.pop();          // يحذف الأخير ويعيده
+array.shift();        // يحذف الأول ويعيده`,arrD],
+['Static Methods','موجودة داخل Array نفسها: <code>Array.of</code> تنشئ مصفوفة، <code>Array.from(iterable, mapFn)</code> تنشئ مصفوفة ويمكن تطبيق دالة تعيين، و<code>Array.isArray</code> تتحقق.',`const arr = Array.of(1, 2, 3, 4, 5);
+let ids = Array.from({ length: 10 }, (item, indx) => indx);
+Array.isArray([1, 2, 3]); // true
+Array.isArray('Hello');   // false`,run('شغّل الأمثلة',()=>'Array.of → '+JSON.stringify(Array.of(1,2,3,4,5))+'\nArray.from → '+JSON.stringify(Array.from({length:10},(x,i)=>i))+'\nisArray([1,2,3]) → '+Array.isArray([1,2,3])+'\nisArray("Hello") → '+Array.isArray('Hello'))],
+['Instance Methods: join و split','<code>join()</code> تحول عناصر المصفوفة إلى String بفاصل محدد، و<code>split()</code> تحول String إلى Array.',`const nameList = ['I', 'love', 'Almdrasa'];
+nameList.join('-');       // "I-love-Almdrasa"
+'I love Almdrasa'.split(' '); // ['I','love','Almdrasa']`,sj],
+['at()','تصل إلى عنصر محدد بالـ index.',`const fruits = ['apple', 'banana', 'orange', 'grape'];
+fruits.at(2); // "orange"`,run('شغّل',()=>['apple','banana','orange','grape'].at(2))],
+['Callback Methods','Instance Methods تأخذ Callback Functions. <b>find</b> تعيد أول عنصر يحقق الشرط (أو undefined). <b>findIndex</b> تعيد index أول عنصر (أو -1). <b>filter</b> مصفوفة جديدة بالعناصر المحققة للشرط. <b>some</b> true إن حقق عنصر واحد الشرط. <b>every</b> true إن حققه الجميع. <b>map</b> مصفوفة جديدة بنتائج الدالة. <b>forEach</b> تنفذ دالة على كل عنصر ولا تعيد قيمة. <b>reduce</b> تختزل المصفوفة إلى قيمة واحدة (Accumulator + Current Value).',`numbers.find((n) => n > 3);              // 4
+fruits.findIndex((f) => f === 'orange'); // 2
+numbers.filter((n) => n % 2 === 0);      // [2, 4]
+numbers.some((n) => n % 2 === 0);        // true
+numbers.every((n) => n % 2 === 0);       // false
+numbers.map((num) => num * 2);           // [2,4,6,8,10]
+numbers.reduce((acc, cur) => acc + cur, 0); // 15`,cbD],
+['الفرق بين map و forEach','<b>forEach</b> لا تعيد قيمة، وتنفذ إجراءً على كل عنصر دون إنشاء مصفوفة جديدة. <b>map</b> تعيد مصفوفة جديدة بالقيم المحوّلة.',`numbers.forEach((number, index, array) => {
+  console.log("Number: " + number + ", Index: " + index);
+});
+const doubled = numbers.map((num) => num * 2);`],
+['sort','ترتب عناصر المصفوفة وتعدّل الأصلية وتعيدها مرتبة. ويمكنك تمرير دالة مقارنة، وللنصوص استخدم <code>localeCompare()</code>.',`[5, 2, 1, 3, 4].sort(); // [1,2,3,4,5]
+array.sort((a, b) => a.name.localeCompare(b.name));
+array.sort((a, b) => a.age - b.age);`,run('رتّب بالعمر',()=>{const a=[{name:'John',age:25},{name:'Jane',age:30},{name:'Adam',age:20}];a.sort((x,y)=>x.age-y.age);return a.map(p=>p.name+' ('+p.age+')').join('\n')})]]},
+
+{n:'Loops',i:'🔁',tag:'شد حيلك يا بطل، وصلت للنهاية! 🏁',c:[
+['for loop','تُستخدم عندما تعرف عدد التكرارات مسبقًا. للمرور على Object بـ <code>for...in</code>، وعلى عناصر Array بـ <code>for...of</code>.',`for (let key in person) {
+  console.log(key + ': ' + person[key]);
+}
+for (let number of numbers) {
+  console.log(number);
+}`,loops],
+['while loop','تكرر تنفيذ التعليمات طالما الشرط صحيح.',`let count = 0;
+while (count < 5) {
+  console.log(count);
+  count++;
+}`],
+['do...while','تنفذ الكود <b>مرة واحدة على الأقل</b> قبل التحقق من الشرط. جرّب في اللعبة بالأعلى أن تبدأ من 10 وقارن بين while و do...while.',`let count = 0;
+do {
+  console.log(count);
+  count++;
+} while (count < 5);`]]}
+];
+
+/* ===== Render ===== */
+const nav=$('#nav'),main=$('#main'),seen=new Set();let cur=0;
+const cheers=['متركز يا عم! 🎯','استعن بالله ولا تعجز 🤲','شد حيلك يا بطل 💪','كمّل، قربت توصل 🦅','ولا يهمك، اللي يبدأ يكمّل ✨','حلّق يا نسر 🚀'];
+function show(k){cur=k;seen.add(k);
+$$('button',nav).forEach((b,i)=>{b.classList.toggle('on',i===k);b.classList.toggle('seen',seen.has(i)&&i!==k)});
+const s=S[k];main.innerHTML=`<h2 class="tag">${s.i} ${s.n} — ${s.tag}</h2><div class="grid"></div>`;
+const g=$('.grid',main);
+s.c.forEach(([t,x,code,demo],j)=>{const a=document.createElement('article');a.className='card';a.style.animationDelay=j*.05+'s';
+a.innerHTML=`<h3>${t}</h3>${x?`<p>${x}</p>`:''}${code?`<pre><code>${esc(code)}</code></pre>`:''}`;
+if(demo){const d=document.createElement('div');d.className='demo';a.appendChild(d);demo(d)}
+g.appendChild(a)});
+$('#bar').style.width=(seen.size/S.length*100)+'%';
+nav.children[k].scrollIntoView({inline:'center',block:'nearest',behavior:'smooth'});
+if(seen.size===S.length)$('#cheer').textContent='🏆 خلّصت كل الأقسام يا بطل!';
+}
+S.forEach((s,i)=>{const b=document.createElement('button');b.type='button';b.textContent=s.i+' '+s.n;b.onclick=()=>{show(i);scrollTo({top:0,behavior:'smooth'})};nav.appendChild(b)});
+let ci=0;$('#cheer').onclick=()=>{$('#cheer').textContent=cheers[ci++%cheers.length]};
+show(0);
+</script>
+</body>
+</html>
